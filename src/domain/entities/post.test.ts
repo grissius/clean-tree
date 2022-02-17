@@ -1,32 +1,33 @@
-import t from "tap";
+import { deepEqual ,equal, notEqual , ok } from 'assert'
 import { Post } from "./post";
 
 
-t.test('NewPost', async () => {
+describe('NewPost', async () => {
     const DATA = { text: 'Text', title: 'Title', userId: '1123' }
     const post = Post.NewPost(DATA)
-    t.test('matches basic fields', async () => {
-        t.match(post, DATA)
+    it('matches basic fields', async () => {
+        const { createTime, updateTime, publishTime, ...postData } = post
+        deepEqual(postData, DATA)
     })
-    t.test('id unset', async () => {
-        t.notOk(post.id)
+    it('id unset', async () => {
+        ok(!post.id)
     })
-    t.test('createTime, updateTime, publishTime created', async () => {
-        t.equal(post.createTime, post.updateTime)
-        t.equal(post.createTime, post.publishTime)
+    it('createTime, updateTime, publishTime created', async () => {
+        equal(post.createTime, post.updateTime)
+        equal(post.createTime, post.publishTime)
     })
-    t.test('custom publish time', async () => {
+    it('custom publish time', async () => {
         const publishTime = new Date()
         const post = Post.NewPost({ ...DATA, publishTime })
-        t.not(post.createTime, post.publishTime)
-        t.equal(publishTime, post.publishTime)
+        notEqual(post.createTime, post.publishTime)
+        equal(publishTime, post.publishTime)
     })
 })
 
-t.test('FromData', async () => {
+describe('FromData', async () => {
     const DATA = { text: 'Text', title: 'Title', userId: '1123', id: '42', createTime: new Date(), publishTime: new Date(), updateTime: new Date() }
     const post = Post.FromData(DATA)
-    t.test('matches basic fields', async () => {
-        t.match(post, DATA)
+    it('matches basic fields', async () => {
+        deepEqual(post, DATA)
     })
 })

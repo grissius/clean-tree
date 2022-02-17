@@ -1,15 +1,15 @@
-import t from 'tap'
+import { deepEqual } from 'assert'
 import { User } from './user'
 
 
-t.test('NewUser', async () => {
+it('NewUser', async () => {
     const DATA = { name: 'my mom' }
     const user = User.NewUser(DATA)
-    t.match(user, DATA)
+    deepEqual(user, DATA)
 })
 
-t.test('FromData', async () => {
+it('FromData', async () => {
     const DATA = { id: '42', name: 'your mom' }
     const user = User.FromData(DATA)
-    t.match(user, DATA)
+    deepEqual(user, DATA)
 })
